@@ -20,5 +20,16 @@ Other Settings: default evmVersion, MIT license
 
 # 操作流程
 
+编译：
+
+注意合约名和文件名保持一致，注意红色框，和编译的文件（未在图中出现，但在remix中下拉即可看到，注意选择被编译的文件），点击编译按钮。
+
 ![image](https://user-images.githubusercontent.com/22724090/183380138-81a15619-7e89-42c0-b38d-da8d223fa280.png)
+
+部署：
+
+注意选择测试环境，部署按钮Deploy后输入合约用户地址，，注意红色框
+
+![image](https://user-images.githubusercontent.com/22724090/183381629-0085a33f-0492-409f-bd55-2e542540c655.png)
+
 
