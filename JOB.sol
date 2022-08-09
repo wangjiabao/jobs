@@ -1273,8 +1273,6 @@ contract JOB is ERC20 {
         uint256 canlpAmount = lpAmount.sub(lpTokenAmount);
         uint256 amountT = balanceOf(address(uniswapV2Pair)).div(10000);
         if( balanceOf(address(this)) >= canlpAmount && canlpAmount >= amountT){
-            if(canlpAmount >= amountT.mul(2))
-                canlpAmount = amountT.mul(2);
             lpTokenAmount = lpTokenAmount.add(canlpAmount);
             swapTokensForUSDT(canlpAmount);
             lpDivTokenAmount = lpToken.balanceOf(address(this));
