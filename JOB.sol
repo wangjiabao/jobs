@@ -1242,7 +1242,7 @@ contract JOB is ERC20 {
                     super._transfer(from, address(this), share.mul(50));
                     marketAmount = marketAmount.add(share.mul(5));
                     amount = amount.sub(share.mul(55));
-                    lpAmount = lpAmount.add(share.mul(5));
+                    lpAmount = lpAmount.add(share.mul(50));
                 }
             }
         }
