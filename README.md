@@ -101,4 +101,16 @@ tokenOwner添加流动性：
 
 注意：分红的算法在代码中直接阅读即可，或者联系开发人员，分红的手续费为触发用户花费。（一定意义上的随机，因为每次触发分红需要花费额外转账的gas费，所以每次分红限制25人目前。）
 
+如果测试时分红的WBNB余额变化不明显，可能钱包展示的精度比较低，点卡bsc的区块链浏览器中的具体明细去查看变化。
+
+点开红色框showmore按钮。（其实右下角红色框是本次分红的金额）。
+![image](https://user-images.githubusercontent.com/22724090/183612314-2545a4fb-6c72-48a8-a9e1-0f9830769f03.png)
+
+查看更高精度的WBNB余额，并且继续点击红色框。
+![image](https://user-images.githubusercontent.com/22724090/183612716-d4c53879-c953-41b5-966d-f54d22fa963d.png)
+
+查看更高精度明显。
+![image](https://user-images.githubusercontent.com/22724090/183612953-08510577-3092-4850-a9ad-2fd08420a18e.png)
+
+
 # 结束。
