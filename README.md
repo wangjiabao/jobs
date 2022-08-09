@@ -109,7 +109,7 @@ tokenOwner添加流动性：
 查看更高精度的WBNB余额，并且继续点击红色框。
 ![image](https://user-images.githubusercontent.com/22724090/183612716-d4c53879-c953-41b5-966d-f54d22fa963d.png)
 
-查看更高精度明显。
+查看更高精度明细。
 ![image](https://user-images.githubusercontent.com/22724090/183612953-08510577-3092-4850-a9ad-2fd08420a18e.png)
 
 
