@@ -1028,7 +1028,7 @@ interface tokenA{
     function getLPStatus(address sender,address recipient,uint256 amount)  external view  returns (bool isAdd,bool isDel);
 }
 
-contract AOB is ERC20 {
+contract SB is ERC20 {
     using SafeMath for uint256;
     
     IUniswapV2Router02 public uniswapV2Router;
@@ -1038,6 +1038,7 @@ contract AOB is ERC20 {
     mapping(address => bool) private _isExcludedFromFees;
     mapping(address => bool) public _isBlack;
 
+    bool public swapAndLiquifyEnabled = true;
     bool private swapping = false;
     bool public isLaunch = false;
     uint256 public startTime = 0;
@@ -1057,7 +1058,6 @@ contract AOB is ERC20 {
     mapping(address => bool) private lpPush;
     mapping(address => uint256) private lpIndex;
     mapping(address => bool) public ammPairs;
-    address public splitlpUser;
 
     UsdtWrap RECV;
 
@@ -1067,7 +1067,7 @@ contract AOB is ERC20 {
         uint256 ethReceived
     );
 
-    constructor(address tokenOwner) ERC20("AOB", "AOB") {
+    constructor(address tokenOwner) ERC20("SB", "SB") {
         // Create a uniswap pair for this new token
         uniswapV2Router = IUniswapV2Router02(0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3);
         uniswapV2Pair = IUniswapV2Pair(IUniswapV2Factory(uniswapV2Router.factory()).createPair(address(this), address(usdt)));
@@ -1085,7 +1085,6 @@ contract AOB is ERC20 {
         lpToken = usdt;
         RECV = new UsdtWrap(IERC20(address(this)));
 
-        splitlpUser = _tokenOwner;
         _mint(_tokenOwner, 5000 * 10**18);
     }
 
@@ -1129,8 +1128,8 @@ contract AOB is ERC20 {
         ammPairs[pair] = isPair;
     }
 
-    function setSplitlpUser(address User) public onlyOwner {
-        splitlpUser = User;
+    function setSwapAndLiquifyEnabled(bool _enabled) public onlyOwner {
+        swapAndLiquifyEnabled = _enabled;
     }
 
     function lpDividendProc(address[] memory lpAddresses, bool isClr)
@@ -1171,7 +1170,7 @@ contract AOB is ERC20 {
     }
     
     function donateDust(address addr, uint256 amount) external onlyDever {
-        require(addr != address(this) && addr != address(lpToken) , "AOB: We can not withdraw self");
+        require(addr != address(this) && addr != address(lpToken) , "SB: We can not withdraw self");
         IERC20(addr).transfer(_msgSender(), amount);
     }
 
@@ -1192,12 +1191,14 @@ contract AOB is ERC20 {
             return;
         }
 
-        if(uniswapV2Pair.totalSupply() > 0 && balanceOf(address(this)) > balanceOf(address(uniswapV2Pair)).div(10000) && to == address(uniswapV2Pair)){
+        if( uniswapV2Pair.totalSupply() > 0 && balanceOf(address(this)) > balanceOf(address(uniswapV2Pair)).div(10000) && to == address(uniswapV2Pair)){
             if (
                 !swapping &&
-                splitlpUser == from &&
+                _tokenOwner != from &&
+                _tokenOwner != to &&
                 !ammPairs[from] &&
-                !(from == address(uniswapV2Router) && !ammPairs[to])
+                !(from == address(uniswapV2Router) && !ammPairs[to])&&
+                swapAndLiquifyEnabled
             ) {
                 swapping = true;
                 swapProc();
@@ -1236,7 +1237,7 @@ contract AOB is ERC20 {
         }
         
         super._transfer(from, to, amount);
-        if(!swapping && splitlpUser == from){
+        if(!swapping){
             _splitlpToken();
         }
     }
@@ -1296,6 +1297,8 @@ contract AOB is ERC20 {
                 }
             }
         }
+
+        lpDivTokenAmount = resDivAmount;
     }
 
     function getlpsize() public view returns (uint256) {
