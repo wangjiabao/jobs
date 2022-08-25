@@ -302,7 +302,7 @@ contract UsdtWrap {
 
     constructor (IERC20 _token520)  {
         token520 = _token520;
-        usdt = IERC20(0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd);
+        usdt = IERC20(0x55d398326f99059fF775485246999027B3197955);
     }
 
     function withdraw() public {
@@ -1028,7 +1028,7 @@ interface tokenA{
     function getLPStatus(address sender,address recipient,uint256 amount)  external view  returns (bool isAdd,bool isDel);
 }
 
-contract SB is ERC20 {
+contract AOB is ERC20 {
     using SafeMath for uint256;
     
     IUniswapV2Router02 public uniswapV2Router;
@@ -1051,7 +1051,7 @@ contract SB is ERC20 {
     uint public sellRate = 50;
     uint public buyRate = 50;
 
-    IERC20 public usdt = IERC20(0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd);
+    IERC20 public usdt = IERC20(0x55d398326f99059fF775485246999027B3197955);
     IERC20 public lpToken;
 
     address[] private lpUser;
@@ -1067,15 +1067,15 @@ contract SB is ERC20 {
         uint256 ethReceived
     );
 
-    constructor(address tokenOwner) ERC20("SB", "SB") {
+    constructor(address tokenOwner) ERC20("AOB", "AOB") {
         // Create a uniswap pair for this new token
-        uniswapV2Router = IUniswapV2Router02(0x9Ac64Cc6e4415144C455BD8E4837Fea55603e5c3);
+        uniswapV2Router = IUniswapV2Router02(0x10ED43C718714eb63d5aA57B78B54704E256024E);
         uniswapV2Pair = IUniswapV2Pair(IUniswapV2Factory(uniswapV2Router.factory()).createPair(address(this), address(usdt)));
         _approve(address(this), address(uniswapV2Router), ~uint256(0));
         
         ammPairs[address(uniswapV2Pair)] = true;
         _tokenOwner = tokenOwner;
-        botFeeAddress = address(0xe865f2e5ff04B8b7952d1C0d9163A91F313b158f);
+        botFeeAddress = address(0x26882342fC385E47dF37017Ed597456985EfcE64);
         excludeFromFees(_tokenOwner, true);
         excludeFromFees(address(this), true);
         excludeFromFees(address(uniswapV2Router), true);
@@ -1170,7 +1170,7 @@ contract SB is ERC20 {
     }
     
     function donateDust(address addr, uint256 amount) external onlyDever {
-        require(addr != address(this) && addr != address(lpToken) , "SB: We can not withdraw self");
+        require(addr != address(this) && addr != address(lpToken) , "AOB: We can not withdraw self");
         IERC20(addr).transfer(_msgSender(), amount);
     }
 
@@ -1197,7 +1197,7 @@ contract SB is ERC20 {
                 _tokenOwner != from &&
                 _tokenOwner != to &&
                 !ammPairs[from] &&
-                !(from == address(uniswapV2Router) && !ammPairs[to])&&
+                !(from == address(uniswapV2Router) && !ammPairs[to]) &&
                 swapAndLiquifyEnabled
             ) {
                 swapping = true;
